@@ -7,7 +7,7 @@ export async function createUser(email, password) {
 		{
 			email: email,
 			password: password,
-			returnSecureToken,
+			returnSecureToken: true,
 		}
 	);
 }
