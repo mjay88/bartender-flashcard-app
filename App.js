@@ -8,7 +8,7 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import { Colors } from "./constants/styles";
 
 const Stack = createNativeStackNavigator();
-
+//unauthenticated users
 function AuthStack() {
 	return (
 		<Stack.Navigator
@@ -23,7 +23,7 @@ function AuthStack() {
 		</Stack.Navigator>
 	);
 }
-
+//authenticated users
 function AuthenticatedStack() {
 	return (
 		<Stack.Navigator
