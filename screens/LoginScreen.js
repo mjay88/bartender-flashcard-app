@@ -19,8 +19,8 @@ function LoginScreen() {
 				`Authentication failed: ${error.message}`,
 				"Could not log you in, please check your credentials or try again later"
 			);
+			setIsAuthenticating(false);
 		}
-		setIsAuthenticating(false);
 	}
 
 	if (isAuthenticating) {

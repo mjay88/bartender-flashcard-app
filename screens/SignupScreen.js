@@ -19,8 +19,8 @@ function SignupScreen() {
 				`Authentication failed: ${error.message}`,
 				"Could not register new user, please check your credentials or try again later"
 			);
+			setIsAuthenticating(false);
 		}
-		setIsAuthenticating(false);
 	}
 
 	if (isAuthenticating) {
