@@ -27,13 +27,17 @@ const ACTIONS = {
 function reducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.GET_ALL_COCKTAILS:
-			return [...state.classics, ...state.legacy, ...state.modernClassics];
+			return [
+				...state.classics.cocktails,
+				...state.legacy.cocktails,
+				...state.modernClassics.cocktails,
+			];
 		case ACTIONS.GET_CLASSIC_COCKTAILS:
-			return [...state.classics];
+			return [...state.classics.cocktails];
 		case ACTIONS.GET_LEGACY_COCKTAILS:
-			return [...state.legacy];
+			return [...state.legacy.cocktails];
 		case ACTIONS.GET_MODERN_CLASSIC_COCKTAILS:
-			return [...state.modernClassics];
+			return [...state.modernClassics.cocktails];
 		default:
 			throw new Error(`No action found for ${action.type}.`);
 	}
@@ -41,10 +45,6 @@ function reducer(state, action) {
 
 function CocktailsContextProvider({ children }) {
 	const [cocktails, dispatch] = useReducer(reducer, {}, (initialState) => {
-		// console.log(
-		// 	classics,
-		// 	"classics!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111"
-		// );
 		if (!classics || !legacy || !modernClassics) {
 			console.log("firing when this should not be fireing");
 			return initialState;
