@@ -1,19 +1,32 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Text } from "react-native";
+import { Text, FlatList, View } from "react-native";
 import { CocktailContext } from "../store/cocktails-context";
+import CocktailCard from "../components/card/CocktailCard";
 
 export default function DeckScreen({ route }) {
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
+	// console.log(context.cocktails, "inside deck screen");
 	useEffect(() => {
-		console.log(
-			context.getCocktailsByKey(route.params.data.title),
-			"inside useEffect"
-		);
-		// setCocktails(context.getCocktailsByKey(route.params.title));
-	}, []);
-	console.log(route.params.data.cocktails[0], "from inside deck Screen");
-	// console.log(cocktails[0]);
+		const cocktailsFoundByParam = context.cocktails.find((category) => {
+			console.log(category.title, "category.title");
+			if (category.title === route.params.data.title) {
+				return category;
+			}
+		});
 
-	return <Text></Text>;
+		setCocktails(cocktailsFoundByParam.cocktails);
+	}, []);
+
+	const renderCocktail = (cocktail) => {
+		console.log(cocktail.item);
+		return <CocktailCard cocktail={cocktail.item} />;
+	};
+
+	return (
+		<View>
+			<Text>{route.params.data.title}</Text>
+			<FlatList data={cocktails} renderItem={renderCocktail} />
+		</View>
+	);
 }

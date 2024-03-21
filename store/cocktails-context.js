@@ -30,14 +30,9 @@ const ACTIONS = {
 function reducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.GET_ALL_COCKTAILS:
-			console.log(state, "insider actions.getallcocktails in reducer");
+			// console.log(state, "insider actions.getallcocktails in reducer");
 			return state;
-		case ACTIONS.GET_CLASSIC_COCKTAILS:
-			return [...state.classics.cocktails];
-		case ACTIONS.GET_LEGACY_COCKTAILS:
-			return [...state.legacy.cocktails];
-		case ACTIONS.GET_MODERN_CLASSIC_COCKTAILS:
-			return [...state.modernClassics.cocktails];
+
 		case ACTIONS.GET_COCKTAILS_BY_KEY:
 			return state.find((category) => {
 				console.log(category.title, "inside reducer");
@@ -57,6 +52,7 @@ function reducer(state, action) {
 
 function CocktailsContextProvider({ children }) {
 	const [cocktails, dispatch] = useReducer(reducer, [
+		//all objects
 		classics,
 		legacy,
 		modernClassics,
@@ -66,27 +62,29 @@ function CocktailsContextProvider({ children }) {
 		dispatch({ type: ACTIONS.GET_ALL_COCKTAILS });
 	};
 
-	const getClassicCocktails = () => {
-		dispatch({ type: ACTIONS.GET_CLASSIC_COCKTAILS });
-	};
-
-	const getLegacyCocktails = () => {
-		dispatch({ type: ACTIONS.GET_LEGACY_COCKTAILS });
-	};
-
-	const getModernClassicCocktails = () => {
-		dispatch({ type: ACTIONS.GET_MODERN_CLASSIC_COCKTAILS });
-	};
 	const getCocktailsByKey = (title) => {
-		dispatch({ type: ACTIONS.GET_COCKTAILS_BY_KEY, payload: { title: title } });
+		dispatch({
+			type: ACTIONS.GET_COCKTAILS_BY_KEY,
+			payload: { title: title },
+		});
 	};
+
+	// const getClassicCocktails = () => {
+	// 	dispatch({ type: ACTIONS.GET_CLASSIC_COCKTAILS });
+	// };
+
+	// const getLegacyCocktails = () => {
+	// 	dispatch({ type: ACTIONS.GET_LEGACY_COCKTAILS });
+	// };
+
+	// const getModernClassicCocktails = () => {
+	// 	dispatch({ type: ACTIONS.GET_MODERN_CLASSIC_COCKTAILS });
+	// };
 
 	const value = {
 		cocktails,
 		getAllCocktails,
-		getClassicCocktails,
-		getLegacyCocktails,
-		getModernClassicCocktails,
+
 		getCocktailsByKey,
 	};
 

@@ -7,18 +7,23 @@ import TitleGridTile from "../components/TitleGridTile";
 function HomeScreen({ navigation }) {
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
+	context.getAllCocktails();
+
+	console.log(context.cocktails, "HOME SCREEN");
 	// useLayoutEffect(() => {
 	// 	setCocktails(context.cocktails);
 	// }, [context]);
 	const isFocused = useIsFocused();
 
 	useEffect(() => {
-		context.getAllCocktails();
 		if (isFocused) {
-			setCocktails(context);
+			setCocktails(context.cocktails);
 		}
-	}, [isFocused, context, context.getAllCocktails]);
-	console.log(cocktails, "cocktails inside homeScreen");
+	}, [isFocused]);
+	console.log(
+		cocktails.cocktails,
+		"cocktails after useeffect!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111"
+	);
 	const renderTitlesItem = (title) => {
 		const onPressHandler = () => {
 			navigation.navigate("DeckScreen", {
@@ -32,7 +37,7 @@ function HomeScreen({ navigation }) {
 	return (
 		<View style={styles.rootContainer}>
 			<FlatList
-				data={cocktails?.cocktails}
+				data={cocktails}
 				renderItem={renderTitlesItem}
 				numColumns={1}
 				showsVerticalScrollIndicator={false}
