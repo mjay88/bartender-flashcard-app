@@ -9,6 +9,8 @@ export const CocktailContext = createContext({
 	classicCocktails: [],
 	legacyCocktails: [],
 	modernClassicCocktails: [],
+	getCocktailsByKey: (title) => {},
+	getAllCocktails: () => {},
 	favoriteCocktials: [],
 });
 
@@ -22,35 +24,43 @@ const ACTIONS = {
 	GET_CLASSIC_COCKTAILS: "GET_CLASSIC_COCKTAILS",
 	GET_LEGACY_COCKTAILS: "GET_LEGACY_COCKTAILS",
 	GET_MODERN_CLASSIC_COCKTAILS: "GET_MODERN_CLASSIC_COCKTAILS",
+	GET_COCKTAILS_BY_KEY: "GET_COCKTAILS_BY_KEY",
 };
 
 function reducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.GET_ALL_COCKTAILS:
-			return [
-				...state.classics.cocktails,
-				...state.legacy.cocktails,
-				...state.modernClassics.cocktails,
-			];
+			console.log(state, "insider actions.getallcocktails in reducer");
+			return state;
 		case ACTIONS.GET_CLASSIC_COCKTAILS:
 			return [...state.classics.cocktails];
 		case ACTIONS.GET_LEGACY_COCKTAILS:
 			return [...state.legacy.cocktails];
 		case ACTIONS.GET_MODERN_CLASSIC_COCKTAILS:
 			return [...state.modernClassics.cocktails];
+		case ACTIONS.GET_COCKTAILS_BY_KEY:
+			return state.find((category) => {
+				console.log(category.title, "inside reducer");
+				console.log(
+					action.payload.title,
+					"action.payload.title inside reducer"
+				);
+				if (category.title === action.payload.title) {
+					console.log(category.cocktails[0], "inside reducer");
+					return category;
+				}
+			});
 		default:
 			throw new Error(`No action found for ${action.type}.`);
 	}
 }
 
 function CocktailsContextProvider({ children }) {
-	const [cocktails, dispatch] = useReducer(reducer, {}, (initialState) => {
-		if (!classics || !legacy || !modernClassics) {
-			console.log("firing when this should not be fireing");
-			return initialState;
-		}
-		return { classics, legacy, modernClassics };
-	});
+	const [cocktails, dispatch] = useReducer(reducer, [
+		classics,
+		legacy,
+		modernClassics,
+	]);
 
 	const getAllCocktails = () => {
 		dispatch({ type: ACTIONS.GET_ALL_COCKTAILS });
@@ -67,6 +77,9 @@ function CocktailsContextProvider({ children }) {
 	const getModernClassicCocktails = () => {
 		dispatch({ type: ACTIONS.GET_MODERN_CLASSIC_COCKTAILS });
 	};
+	const getCocktailsByKey = (title) => {
+		dispatch({ type: ACTIONS.GET_COCKTAILS_BY_KEY, payload: { title: title } });
+	};
 
 	const value = {
 		cocktails,
@@ -74,6 +87,7 @@ function CocktailsContextProvider({ children }) {
 		getClassicCocktails,
 		getLegacyCocktails,
 		getModernClassicCocktails,
+		getCocktailsByKey,
 	};
 
 	return (

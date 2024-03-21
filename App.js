@@ -135,6 +135,7 @@ function AuthenticatedStack() {
 					),
 				}}
 			/>
+			<Stack.Screen name="DeckScreen" component={DeckScreen} />
 		</Stack.Navigator>
 	);
 }
