@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Platform, FlatList } from "react-native";
 
 export default function CocktailCard({ cocktail }) {
-	// console.log(cocktail.name, "inside CocktailCard component");
+	// console.log(cocktail, "inside CocktailCard component");
 
 	const renderIngredientItem = (ingredient) => {
 		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		height: 450,
+		height: 500,
 	},
 
 	innerCard: {
 		flex: 1,
-		width: "75%",
+		width: "85%",
 		height: "90%",
 		alignItems: "center",
-		justifyContent: "flex-start",
+		justifyContent: "space-between",
 		// alignContent: "flex-start",
 		// margin: 16,
 		marginVertical: 16,
@@ -60,18 +60,19 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	ingredientsList: {
-		paddingVertical: 15,
+		paddingTop: 5,
+		paddingBottom: 5,
 		marginHorizontal: 20,
 	},
 	ingredient: {
 		textAlign: "center",
 		fontWeight: "500",
-		padding: 7,
+		padding: 3,
 		fontSize: 16,
 	},
 	cardField: {
 		marginHorizontal: 20,
-		paddingVertical: 16,
+		paddingVertical: 12,
 		textAlign: "center",
 		fontWeight: "500",
 		fontSize: 16,

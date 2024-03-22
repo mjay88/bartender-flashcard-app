@@ -10,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import HomeScreen from "./screens/HomeScreen";
-import CardScreen from "./screens/CardScreen";
+import ShuffleScreen from "./screens/ShuffleScreen";
 import DeckScreen from "./screens/DeckScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { Colors } from "./constants/styles";
@@ -18,6 +18,8 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import CocktailsContextProvider from "./store/cocktails-context";
 import IconButton from "./components/ui/IconButton";
 import { Ionicons } from "@expo/vector-icons";
+
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -122,7 +124,7 @@ function AuthenticatedStack() {
 				}}
 			/>
 			<Stack.Screen
-				name="Welcome"
+				name="HomeScreen"
 				component={HomeScreen}
 				options={{
 					headerRight: ({ tintColor }) => (
@@ -136,6 +138,21 @@ function AuthenticatedStack() {
 				}}
 			/>
 			<Stack.Screen name="DeckScreen" component={DeckScreen} />
+			<Stack.Screen
+				name="ShuffleScreen"
+				component={ShuffleScreen}
+				options={{
+					headerRight: ({ tintColor }) => (
+						<IconButton
+							icon="heart"
+							color={tintColor}
+							size={24}
+							onPress={() => console.log("liking")}
+						/>
+					),
+					headerBackTitleVisible: false,
+				}}
+			/>
 		</Stack.Navigator>
 	);
 }
@@ -181,11 +198,11 @@ function Root() {
 
 export default function App() {
 	return (
-		<>
+		<SafeAreaProvider>
 			<StatusBar style="light" />
 			<AuthContextProvider>
 				<Root />
 			</AuthContextProvider>
-		</>
+		</SafeAreaProvider>
 	);
 }

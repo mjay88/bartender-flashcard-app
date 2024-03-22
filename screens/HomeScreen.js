@@ -10,7 +10,7 @@ function HomeScreen({ navigation }) {
 	// console.log(context, "all of context");
 	// context.getAllCocktails();
 
-	console.log(context.cocktails, "HOME SCREEN");
+	// console.log(context.cocktails, "HOME SCREEN");
 	// useLayoutEffect(() => {
 	// 	setCocktails(context.cocktails);
 	// }, [context]);
