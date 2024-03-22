@@ -7,7 +7,8 @@ import TitleGridTile from "../components/TitleGridTile";
 function HomeScreen({ navigation }) {
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
-	context.getAllCocktails();
+	// console.log(context, "all of context");
+	// context.getAllCocktails();
 
 	console.log(context.cocktails, "HOME SCREEN");
 	// useLayoutEffect(() => {
@@ -20,10 +21,10 @@ function HomeScreen({ navigation }) {
 			setCocktails(context.cocktails);
 		}
 	}, [isFocused]);
-	console.log(
-		cocktails.cocktails,
-		"cocktails after useeffect!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111"
-	);
+	// console.log(
+	// 	cocktails.cocktails,
+	// 	"cocktails after useeffect!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111"
+	// );
 	const renderTitlesItem = (title) => {
 		const onPressHandler = () => {
 			navigation.navigate("DeckScreen", {

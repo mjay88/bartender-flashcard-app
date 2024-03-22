@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Text, FlatList, View } from "react-native";
+import { Text, FlatList, View, StyleSheet } from "react-native";
 import { CocktailContext } from "../store/cocktails-context";
 import CocktailCard from "../components/card/CocktailCard";
 
@@ -19,7 +19,7 @@ export default function DeckScreen({ route }) {
 	}, []);
 
 	const renderCocktail = (cocktail) => {
-		console.log(cocktail.item);
+		// console.log(cocktail.item);
 		return <CocktailCard cocktail={cocktail.item} />;
 	};
 
@@ -30,3 +30,11 @@ export default function DeckScreen({ route }) {
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	cardFields: {
+		justifyContent: "center",
+		alignItems: "center",
+		textAlign: "center",
+	},
+});

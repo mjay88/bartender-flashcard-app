@@ -1,11 +1,26 @@
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform, FlatList } from "react-native";
 
 export default function CocktailCard({ cocktail }) {
-	console.log(cocktail.name, "inside CocktailCard component");
+	// console.log(cocktail.name, "inside CocktailCard component");
+
+	const renderIngredientItem = (ingredient) => {
+		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
+	};
 	return (
 		<View style={styles.outerCard}>
 			<View style={styles.innerCard}>
 				<Text style={styles.cardTitle}>{cocktail.name}</Text>
+				<View style={styles.ingredientsList}>
+					<FlatList
+						data={cocktail.ingredients}
+						renderItem={renderIngredientItem}
+					/>
+				</View>
+				<Text style={styles.cardField}>{cocktail.instructions}</Text>
+				<Text style={styles.cardField}>{cocktail.garnish}</Text>
+				<Text style={[styles.cardField, { marginBottom: 20 }]}>
+					{cocktail.glassware}
+				</Text>
 			</View>
 		</View>
 	);
@@ -16,14 +31,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		height: 450,
 	},
 
 	innerCard: {
 		flex: 1,
 		width: "75%",
-		height: "80%",
+		height: "90%",
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "flex-start",
+		// alignContent: "flex-start",
 		// margin: 16,
 		marginVertical: 16,
 		borderRadius: 8,
@@ -34,12 +51,29 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.4,
 		shadowOffset: { width: 0, height: 2 },
 		shadowRadius: 8,
-
+		textAlign: "center",
 		overflow: Platform.OS === "android" ? "hidden" : "visible",
 	},
-
 	cardTitle: {
-		paddingVertical: 20,
-		marginVertical: 20,
+		padding: 10,
+		fontSize: 20,
+		fontWeight: "bold",
+	},
+	ingredientsList: {
+		paddingVertical: 15,
+		marginHorizontal: 20,
+	},
+	ingredient: {
+		textAlign: "center",
+		fontWeight: "500",
+		padding: 7,
+		fontSize: 16,
+	},
+	cardField: {
+		marginHorizontal: 20,
+		paddingVertical: 16,
+		textAlign: "center",
+		fontWeight: "500",
+		fontSize: 16,
 	},
 });
