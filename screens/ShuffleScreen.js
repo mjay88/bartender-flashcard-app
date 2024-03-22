@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import CocktailCard from "../components/card/CocktailCard";
-import ShuffleContainer from "../components/card/ShuffleContainer";
+import ShuffleCard from "../components/shuffle-components/shuffleCard";
+import ShuffleContainer from "../components/shuffle-components/ShuffleContainer";
 import Button from "../components/ui/Button";
 import { useIsFocused } from "@react-navigation/native";
 export default function ShuffleScreen({ route }) {
@@ -30,17 +31,13 @@ export default function ShuffleScreen({ route }) {
 	console.log(cocktails[currentCard], "current card inside shuffle screen");
 	return (
 		<View style={styles.container}>
-			{/* <ShuffleContainer
+			<ShuffleContainer
 				currentCard={currentCard}
 				setCurrentCard={setCurrentCard}
 				endOfDeck={cocktails.length}
-			> */}
-			<CocktailCard cocktail={cocktails[currentCard]} />
-			{/* </ShuffleContainer> */}
-			<View style={styles.buttonContainer}>
-				<Button onPress={previousHandler}>{"previous"}</Button>
-				<Button onPress={nextHandler}>{"next"}</Button>
-			</View>
+			>
+				<ShuffleCard cocktail={cocktails[currentCard]} />
+			</ShuffleContainer>
 		</View>
 	);
 }
@@ -48,12 +45,6 @@ export default function ShuffleScreen({ route }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: "space-around",
-	},
-	buttonContainer: {
-		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "flex-end",
-		marginBottom: 10,
+		// justifyContent: "space-around",
 	},
 });
