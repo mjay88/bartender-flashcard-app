@@ -1,21 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import ShuffleCard from "../components/shuffle-components/shuffleCard";
 import { useIsFocused } from "@react-navigation/native";
 import Button from "../components/ui/Button";
+import IconButton from "../components/ui/IconButton";
 import {
 	useSharedValue,
 	withTiming,
 	runOnJS,
 	Easing,
 } from "react-native-reanimated";
+import { CocktailContext } from "../store/cocktails-context";
 
-export default function ShuffleScreen({ route }) {
+export default function ShuffleScreen({ route, navigation }) {
+	const context = useContext(CocktailContext);
+
+	const favorites = context?.cocktails?.find(
+		(category) => category.title === "Favorites"
+	).cocktails;
+	console.log(favorites, "line 21 ShuffleScreen");
 	const [cocktails, setCocktails] = useState([]);
 	const [currentCard, setCurrentCard] = useState(0);
 	const isFocused = useIsFocused();
 	const rotation = useSharedValue(0);
 	const [isFlipped, setIsFlipped] = useState(false);
+	const isFavorite = favorites.find(
+		(favorite) => favorite.name === cocktails[currentCard]?.name
+	);
+	const endOfDeck = cocktails?.length;
+
+	function changeFavoriteStatusHandler() {
+		context.toggleFavorite(cocktails[currentCard]);
+	}
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => {
+				return (
+					<IconButton
+						icon={isFavorite ? "heart" : "heart-outline"}
+						color="white"
+						onPress={changeFavoriteStatusHandler}
+						size={24}
+					/>
+				);
+			},
+		});
+	}, [navigation, changeFavoriteStatusHandler]);
+
 	const toggleFlip = () => {
 		rotation.value = withTiming(
 			isFlipped ? 0 : 180,
@@ -29,8 +61,6 @@ export default function ShuffleScreen({ route }) {
 			}
 		);
 	};
-
-	const endOfDeck = cocktails?.length;
 
 	useEffect(() => {
 		if (isFocused && route.params.cocktails) {
@@ -51,7 +81,7 @@ export default function ShuffleScreen({ route }) {
 		}
 	}
 	function nextHandler() {
-		if (currentCard === endOfDeck) return;
+		if (currentCard === endOfDeck - 1) return;
 		if (isFlipped === true) {
 			toggleFlip();
 			timeoutId = setTimeout(() => {

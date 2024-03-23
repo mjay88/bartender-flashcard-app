@@ -6,8 +6,9 @@ import TitleGridTile from "../components/TitleGridTile";
 
 function HomeScreen({ navigation }) {
 	const [cocktails, setCocktails] = useState([]);
+
 	const context = useContext(CocktailContext);
-	// console.log(context, "all of context");
+
 	// context.getAllCocktails();
 
 	// console.log(context.cocktails, "HOME SCREEN");

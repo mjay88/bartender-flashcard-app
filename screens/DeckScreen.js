@@ -7,8 +7,9 @@ import { FAB } from "@rneui/themed";
 export default function DeckScreen({ route, navigation }) {
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
-	// console.log(context.cocktails, "inside deck screen");
+
 	useEffect(() => {
+		//this should be using a dispatch from cocktails-context, currently a work around
 		const cocktailsFoundByParam = context.cocktails.find((category) => {
 			// console.log(category.title, "category.title");
 			if (category.title === route.params.data.title) {
