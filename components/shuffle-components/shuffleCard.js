@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import {
 	View,
 	Text,
@@ -23,25 +23,25 @@ import {
 	GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
-export default function ShuffleCard({ cocktail }) {
-	// console.log(cocktail, "inside CocktailCard component");
-	const [isFlipped, setIsFlipped] = useState(false);
+export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 	//Shared value to control the flip animation
-	const rotation = useSharedValue(0);
+	// const [isFlipped, setIsFlipped] = useState(false);
+	// const rotation = useSharedValue(0);
 	//function to toggle the flip state and trigger the animation
-	const toggleFlip = () => {
-		rotation.value = withTiming(
-			isFlipped ? 0 : 180,
-			{
-				duration: 500,
-				easing: Easing.ease,
-			},
-			() => {
-				//after the animation is complete, update the flip state
-				runOnJS(setIsFlipped)(!isFlipped);
-			}
-		);
-	};
+	// const toggleFlip = () => {
+
+	// 	rotation.value = withTiming(
+	// 		isFlipped ? 0 : 180,
+	// 		{
+	// 			duration: 500,
+	// 			easing: Easing.ease,
+	// 		},
+	// 		() => {
+	// 			//after the animation is complete, update the flip state
+	// 			runOnJS(setIsFlipped)(!isFlipped);
+	// 		}
+	// 	);
+	// };
 	//define the styles for the front and back of the card based on the rotation
 	const frontCardStyle = useAnimatedStyle(() => {
 		return {
