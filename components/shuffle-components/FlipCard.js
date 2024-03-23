@@ -23,7 +23,7 @@ import {
 	GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
-export default function ShuffleCard({ cocktail }) {
+export default function FlipCard({ cocktail }) {
 	// console.log(cocktail, "inside CocktailCard component");
 	const [isFlipped, setIsFlipped] = useState(false);
 	//Shared value to control the flip animation
@@ -62,7 +62,7 @@ export default function ShuffleCard({ cocktail }) {
 		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
 	};
 	return (
-		<GestureHandlerRootView style={styles.outerCard}>
+		<GestureHandlerRootView style={styles.container}>
 			<TapGestureHandler
 				onHandlerStateChange={({ nativeEvent }) => {
 					if (nativeEvent.state === State.END) {
@@ -70,8 +70,8 @@ export default function ShuffleCard({ cocktail }) {
 					}
 				}}
 			>
-				<Animated.View style={[styles.innerCard, frontCardStyle]}>
-					<Text style={styles.cardTitle}>{cocktail.name}</Text>
+				<Animated.View style={[styles.cardContainer, frontCardStyle]}>
+					<Text style={styles.cardText}>Front</Text>
 				</Animated.View>
 			</TapGestureHandler>
 
@@ -83,20 +83,9 @@ export default function ShuffleCard({ cocktail }) {
 				}}
 			>
 				<Animated.View
-					style={[styles.innerCard, backCardStyle, styles.cardBack]}
+					style={[styles.cardContainer, backCardStyle, styles.cardBack]}
 				>
-					<Text style={styles.cardTitle}>{cocktail.name}</Text>
-					<View style={styles.ingredientsList}>
-						<FlatList
-							data={cocktail.ingredients}
-							renderItem={renderIngredientItem}
-						/>
-					</View>
-					<Text style={styles.cardField}>{cocktail.instructions}</Text>
-					<Text style={styles.cardField}>{cocktail.garnish}</Text>
-					<Text style={[styles.cardField, { marginBottom: 20 }]}>
-						{cocktail.glassware}
-					</Text>
+					<Text styles={styles.cardText}>Back</Text>
 				</Animated.View>
 			</TapGestureHandler>
 		</GestureHandlerRootView>
@@ -104,59 +93,26 @@ export default function ShuffleCard({ cocktail }) {
 }
 
 const styles = StyleSheet.create({
-	outerCard: {
+	container: {
 		flex: 1,
-		alignItems: "center",
 		justifyContent: "center",
-		height: 500,
+		alignItems: "center",
 	},
-
-	innerCard: {
-		width: "85%",
-		height: "90%",
-		// alignItems: "center",
-		justifyContent: "space-between",
-		// alignContent: "flex-start",
-		margin: 16,
-		marginVertical: 16,
-		borderRadius: 8,
-		elevation: 6,
-		//ios shadow won't work without a background color set
-		backgroundColor: "white",
-		shadowColor: "black",
-		shadowOpacity: 0.4,
-		shadowOffset: { width: 0, height: 2 },
-		shadowRadius: 8,
-		textAlign: "center",
-		overflow: Platform.OS === "android" ? "hidden" : "visible",
+	cardContainer: {
+		width: 200,
+		height: 300,
+		backgroundColor: "lightblue",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 10,
 		backfaceVisibility: "hidden",
 	},
 	cardBack: {
+		backgroundColor: "lightcoral",
 		position: "absolute",
 	},
-	cardTitle: {
-		padding: 10,
-		fontSize: 20,
+	cardText: {
+		fontSize: 24,
 		fontWeight: "bold",
-		textAlign: "center",
-		marginTop: 15,
-	},
-	ingredientsList: {
-		paddingTop: 5,
-		paddingBottom: 5,
-		marginHorizontal: 20,
-	},
-	ingredient: {
-		textAlign: "center",
-		fontWeight: "500",
-		padding: 3,
-		fontSize: 16,
-	},
-	cardField: {
-		marginHorizontal: 20,
-		paddingVertical: 12,
-		textAlign: "center",
-		fontWeight: "500",
-		fontSize: 16,
 	},
 });

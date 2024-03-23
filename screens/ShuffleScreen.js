@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import CocktailCard from "../components/card/CocktailCard";
-import ShuffleCard from "../components/shuffle-components/shuffleCard";
+import ShuffleCard from "../components/shuffle-components/ShuffleCard";
 import ShuffleContainer from "../components/shuffle-components/ShuffleContainer";
-import Button from "../components/ui/Button";
 import { useIsFocused } from "@react-navigation/native";
+import FlipCard from "../components/shuffle-components/FlipCard";
 export default function ShuffleScreen({ route }) {
 	const [cocktails, setCocktails] = useState([]);
 	const [currentCard, setCurrentCard] = useState(0);
 	const isFocused = useIsFocused();
 	const endOfDeck = cocktails?.length;
-	// setCocktails(route.params.cocktails);
-	// console.log(route.params.cocktails, "inside shuffle");
-	function previousHandler() {
-		if (currentCard === 0) return;
-		setCurrentCard(currentCard - 1);
-	}
-	function nextHandler() {
-		if (currentCard === endOfDeck) return;
-		setCurrentCard(currentCard + 1);
-	}
 
 	useEffect(() => {
 		if (isFocused && route.params.cocktails) {
@@ -37,6 +26,7 @@ export default function ShuffleScreen({ route }) {
 				endOfDeck={cocktails.length}
 			>
 				<ShuffleCard cocktail={cocktails[currentCard]} />
+				{/* <FlipCard /> */}
 			</ShuffleContainer>
 		</View>
 	);
