@@ -21,6 +21,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+//for sqlite
+import { init } from "./util/database";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -197,6 +200,22 @@ function Root() {
 }
 
 export default function App() {
+	const [dbInitialized, setDbInitialized] = useState(false);
+
+	useEffect(() => {
+		init()
+			.then(() => {
+				setDbInitialized(true);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+
+	if (!dbInitialized) {
+		return <AppLoading />;
+	}
+
 	return (
 		<SafeAreaProvider>
 			<StatusBar style="light" />

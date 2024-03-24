@@ -1,7 +1,12 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { classics } from "../shared/classics";
 import { legacy } from "../shared/bp-legacy-cocktails";
 import { modernClassics } from "../shared/modernClassics";
+import {
+	insertCocktail,
+	deleteCocktail,
+	fetchCocktails,
+} from "../util/database";
 
 export const CocktailContext = createContext({
 	cocktails: [],
@@ -22,9 +27,7 @@ export const CocktailContext = createContext({
 //
 const ACTIONS = {
 	GET_ALL_COCKTAILS: "GET_ALL_COCKTAILS",
-	GET_CLASSIC_COCKTAILS: "GET_CLASSIC_COCKTAILS",
-	GET_LEGACY_COCKTAILS: "GET_LEGACY_COCKTAILS",
-	GET_MODERN_CLASSIC_COCKTAILS: "GET_MODERN_CLASSIC_COCKTAILS",
+	SET_COCKTAILS_AFTER_DB_FETCH: "SET_COCKTAILS_AFTER_DB_FETCH",
 	GET_COCKTAILS_BY_KEY: "GET_COCKTAILS_BY_KEY",
 	ADD_TO_FAVORITE: "ADD_TO_FAVORITE",
 	REMOVE_FROM_FAVORITE: "REMOVE_FROM_FAVORITE",
@@ -37,36 +40,18 @@ function reducer(state, action) {
 			// console.log(state, "insider actions.getallcocktails in reducer");
 			return state;
 
-		// case ACTIONS.GET_COCKTAILS_BY_KEY:
-		// 	return state.find((category) => {
-		// 		console.log(category.title, "inside reducer");
-		// 		console.log(
-		// 			action.payload.title,
-		// 			"action.payload.title inside reducer"
-		// 		);
-		// 		if (category.title === action.payload.title) {
-		// 			console.log(category.cocktails[0], "inside reducer");
-		// 			return category;
-		// 		}
-		// 	});
-
-		case ACTIONS.ADD_TO_FAVORITE:
+		case ACTIONS.SET_COCKTAILS_AFTER_DB_FETCH:
 			return state.map((category) => {
 				if (category.title === "Favorites") {
-					return [action.payload.cocktail, ...category.cocktails];
+					return {
+						...category,
+						cocktails: [...action.payload.favorites],
+					};
 				} else {
 					return category;
 				}
 			});
 
-		case ACTIONS.REMOVE_FROM_FAVORITE:
-			return state.filter((category) => {
-				if (category.title === "Favorites") {
-					return category.cocktails.filter(
-						(cocktail) => cocktail.name !== action.payload.cocktail.name
-					);
-				}
-			});
 		case ACTIONS.TOGGLE_FAVORITE:
 			const favorites = state.find(
 				(category) => category.title === "Favorites"
@@ -75,8 +60,7 @@ function reducer(state, action) {
 			let alreadyFavorite = favorites.cocktails.find(
 				(favorite) => favorite.name === action.payload.cocktail.name
 			);
-			console.log(action.payload, "action.payload.name");
-			console.log(alreadyFavorite, "already favorite");
+
 			if (alreadyFavorite) {
 				return state.map((category) => {
 					if (category.title === "Favorites") {
@@ -118,6 +102,17 @@ function CocktailsContextProvider({ children }) {
 		{ cocktails: [], title: "Favorites" },
 	]);
 
+	useEffect(() => {
+		const checkDBOnFirstRender = async () => {
+			const foundInDB = await fetchCocktails();
+			console.log(foundInDB, "foundInDB");
+			if (foundInDB) {
+				setFavoritesAfterDBFetch(foundInDB);
+			}
+		};
+		checkDBOnFirstRender();
+	}, []);
+
 	const getAllCocktails = () => {
 		dispatch({ type: ACTIONS.GET_ALL_COCKTAILS });
 	};
@@ -132,35 +127,34 @@ function CocktailsContextProvider({ children }) {
 		});
 	};
 
-	const addFavorite = (cocktail) => {
-		dispatch({ type: ACTIONS.ADD_TO_FAVORITE, payload: { cocktail } });
-	};
-
-	const removeFromFavorite = (cocktail) => {
-		dispatch({ type: ACTIONS.REMOVE_FROM_FAVORITE, payload: { cocktail } });
-	};
-
-	const toggleFavorite = (cocktail) => {
+	const toggleFavorite = async (cocktail) => {
+		//fetch from sqlite db
+		const allFavorites = await fetchCocktails();
+		if (
+			allFavorites.find(
+				(favoritedCocktail) => favoritedCocktail.name === cocktail.name
+			)
+		) {
+			await deleteCocktail(cocktail);
+		} else {
+			insertCocktail(cocktail);
+		}
+		//if cocktail already exists remove from sqlite db
+		//if cocktail doesn't exist add to sqlite db
+		//execute dispatch everytime
 		dispatch({ type: ACTIONS.TOGGLE_FAVORITE, payload: { cocktail } });
 	};
 
-	// const getClassicCocktails = () => {
-	// 	dispatch({ type: ACTIONS.GET_CLASSIC_COCKTAILS });
-	// };
-
-	// const getLegacyCocktails = () => {
-	// 	dispatch({ type: ACTIONS.GET_LEGACY_COCKTAILS });
-	// };
-
-	// const getModernClassicCocktails = () => {
-	// 	dispatch({ type: ACTIONS.GET_MODERN_CLASSIC_COCKTAILS });
-	// };
+	function setFavoritesAfterDBFetch(foundInDB) {
+		dispatch({
+			type: ACTIONS.SET_COCKTAILS_AFTER_DB_FETCH,
+			payload: { favorites: foundInDB },
+		});
+	}
 
 	const value = {
 		cocktails,
 		getAllCocktails,
-		addFavorite,
-		removeFromFavorite,
 		getCocktailsByKey,
 		toggleFavorite,
 	};
