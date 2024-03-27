@@ -5,7 +5,7 @@ import { CocktailContext } from "../store/cocktails-context";
 import TitleGridTile from "../components/TitleGridTile";
 
 function HomeScreen({ navigation }) {
-	const [cocktails, setCocktails] = useState([]);
+	const [cocktailCategories, setCocktailCategories] = useState([]);
 
 	const context = useContext(CocktailContext);
 
@@ -19,7 +19,7 @@ function HomeScreen({ navigation }) {
 
 	useEffect(() => {
 		if (isFocused) {
-			setCocktails(context.cocktails);
+			setCocktailCategories(context.cocktails);
 		}
 	}, [isFocused]);
 	// console.log(
@@ -39,7 +39,7 @@ function HomeScreen({ navigation }) {
 	return (
 		<View style={styles.rootContainer}>
 			<FlatList
-				data={cocktails}
+				data={cocktailCategories}
 				renderItem={renderTitlesItem}
 				numColumns={1}
 				showsVerticalScrollIndicator={false}

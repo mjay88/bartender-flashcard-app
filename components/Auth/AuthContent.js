@@ -86,5 +86,6 @@ const styles = StyleSheet.create({
 	},
 	buttons: {
 		marginTop: 8,
+		marginLeft: 10,
 	},
 });

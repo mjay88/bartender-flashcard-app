@@ -19,6 +19,8 @@ import CocktailsContextProvider from "./store/cocktails-context";
 import IconButton from "./components/ui/IconButton";
 import { Ionicons } from "@expo/vector-icons";
 
+import { CocktailContext } from "./store/cocktails-context";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //for sqlite
@@ -29,6 +31,7 @@ const Drawer = createDrawerNavigator();
 
 //drawer navigator
 function DrawerNavigator() {
+	const cocktailContext = useContext(CocktailContext);
 	const authCtx = useContext(AuthContext);
 	return (
 		<Drawer.Navigator
@@ -55,29 +58,34 @@ function DrawerNavigator() {
 				component={HomeScreen}
 				options={{ title: "All Decks" }}
 			/>
+			{/* Can I add all the screens below here into a custom component? */}
 			<Drawer.Screen
 				name="Classics"
 				component={DeckScreen}
-				options={{ title: "Classics" }}
+				options={({ route }) => ({ title: "Classics" })}
+				initialParams={{ category: "Classics" }}
 			/>
 			<Drawer.Screen
 				name="ModernClassics"
 				component={DeckScreen}
 				options={{ title: "Modern Classics" }}
+				initialParams={{ category: "Modern Classics" }}
 			/>
 			<Drawer.Screen
 				name="BarrelProofLegacy"
 				component={DeckScreen}
 				options={{ title: "BP Legacy Cocktails" }}
+				initialParams={{ category: "Barrel Proof Legacy Cocktails" }}
 			/>
 			<Drawer.Screen
 				name="Favorites"
-				component={FavoritesScreen}
+				component={DeckScreen}
 				options={{
 					drawerIcon: ({ color, size }) => (
 						<Ionicons name="star" color={color} size={size}></Ionicons>
 					),
 				}}
+				initialParams={{ category: "Favorites" }}
 			/>
 		</Drawer.Navigator>
 	);
@@ -109,7 +117,7 @@ function AuthenticatedStack() {
 			}}
 		>
 			<Stack.Screen
-				name="Drawer"
+				name="Home"
 				component={DrawerNavigator}
 				options={{
 					headerShown: false,

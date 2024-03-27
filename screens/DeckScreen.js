@@ -7,12 +7,19 @@ import { FAB } from "@rneui/themed";
 export default function DeckScreen({ route, navigation }) {
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
-
+	//this param is being passed from App.js DrawerNavigator setup
+	const { category: categoryFromDrawer } = route.params;
+	console.log(cocktails.title, "cocktails in DeckScreen");
 	useEffect(() => {
 		//this should be using a dispatch from cocktails-context, currently a work around
 		const cocktailsFoundByParam = context.cocktails.find((category) => {
 			// console.log(category.title, "category.title");
-			if (category.title === route.params.data.title) {
+			if (category.title === categoryFromDrawer) {
+				return category;
+			}
+			//this params is being passed from HomeScreen.js
+			if (category.title === route?.params?.data?.title) {
+				navigation.setOptions({ title: route.params.data.title });
 				return category;
 			}
 		});
@@ -27,7 +34,7 @@ export default function DeckScreen({ route, navigation }) {
 
 	return (
 		<View>
-			<Text>{route.params.data.title}</Text>
+			{/* <Text>{route.params.data.title}</Text> */}
 			<FlatList data={cocktails.cocktails} renderItem={renderCocktail} />
 			<FAB
 				visible={true}
@@ -37,6 +44,7 @@ export default function DeckScreen({ route, navigation }) {
 				onPress={() =>
 					navigation.navigate("ShuffleScreen", {
 						cocktails: cocktails.cocktails,
+						title: cocktails.title,
 					})
 				}
 				size="small"

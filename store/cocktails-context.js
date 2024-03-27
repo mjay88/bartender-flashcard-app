@@ -5,6 +5,7 @@ import { modernClassics } from "../shared/modernClassics";
 import {
 	insertCocktail,
 	deleteCocktail,
+	//fetchCocktails fetches favorite cocktails
 	fetchCocktails,
 } from "../util/database";
 
@@ -135,13 +136,13 @@ function CocktailsContextProvider({ children }) {
 				(favoritedCocktail) => favoritedCocktail.name === cocktail.name
 			)
 		) {
+			//if cocktail already exists remove from sqlite db
 			await deleteCocktail(cocktail);
 		} else {
+			//if cocktail doesn't exist add to sqlite db
 			insertCocktail(cocktail);
 		}
-		//if cocktail already exists remove from sqlite db
-		//if cocktail doesn't exist add to sqlite db
-		//execute dispatch everytime
+		//execute dispatch everytime, syncing local and storage favorites
 		dispatch({ type: ACTIONS.TOGGLE_FAVORITE, payload: { cocktail } });
 	};
 

@@ -11,19 +11,20 @@ import {
 	Easing,
 } from "react-native-reanimated";
 import { CocktailContext } from "../store/cocktails-context";
+import { shuffle } from "../util/shuffle";
 
 export default function ShuffleScreen({ route, navigation }) {
 	const context = useContext(CocktailContext);
-
-	const favorites = context?.cocktails?.find(
-		(category) => category.title === "Favorites"
-	).cocktails;
-	console.log(favorites, "line 21 ShuffleScreen");
+	console.log(route.params.title, "title in params in shufflesceen");
+	// console.log(favorites, "line 21 ShuffleScreen");
 	const [cocktails, setCocktails] = useState([]);
 	const [currentCard, setCurrentCard] = useState(0);
 	const isFocused = useIsFocused();
 	const rotation = useSharedValue(0);
 	const [isFlipped, setIsFlipped] = useState(false);
+	const favorites = context?.cocktails?.find(
+		(category) => category.title === "Favorites"
+	).cocktails;
 	const isFavorite = favorites.find(
 		(favorite) => favorite.name === cocktails[currentCard]?.name
 	);
@@ -45,6 +46,7 @@ export default function ShuffleScreen({ route, navigation }) {
 					/>
 				);
 			},
+			title: route.params.title,
 		});
 	}, [navigation, changeFavoriteStatusHandler]);
 
@@ -64,7 +66,7 @@ export default function ShuffleScreen({ route, navigation }) {
 
 	useEffect(() => {
 		if (isFocused && route.params.cocktails) {
-			setCocktails(route.params.cocktails);
+			setCocktails(() => shuffle(route.params.cocktails));
 		}
 	}, []);
 
@@ -93,9 +95,7 @@ export default function ShuffleScreen({ route, navigation }) {
 	}
 	clearTimeout(timeoutId);
 
-	// console.log(cocktails[0].name, "shuffle");
 	if (cocktails.length === 0) return null;
-	// console.log(cocktails[currentCard], "current card inside shuffle screen");
 	return (
 		<View style={styles.container}>
 			<ShuffleCard

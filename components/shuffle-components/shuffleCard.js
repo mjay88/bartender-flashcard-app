@@ -71,7 +71,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 				}}
 			>
 				<Animated.View style={[styles.innerCard, frontCardStyle]}>
-					<Text style={styles.cardTitle}>{cocktail.name}</Text>
+					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
 				</Animated.View>
 			</TapGestureHandler>
 
@@ -85,7 +85,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 				<Animated.View
 					style={[styles.innerCard, backCardStyle, styles.cardBack]}
 				>
-					<Text style={styles.cardTitle}>{cocktail.name}</Text>
+					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
 					<View style={styles.ingredientsList}>
 						<FlatList
 							data={cocktail.ingredients}
