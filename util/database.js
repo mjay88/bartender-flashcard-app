@@ -80,7 +80,7 @@ export function fetchCocktails() {
 				"SELECT * FROM favorites",
 				[],
 				(_, result) => {
-					console.log(result.rows._array);
+					// console.log(result.rows._array);
 					const favorites = [];
 
 					for (const item of result.rows._array) {

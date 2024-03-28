@@ -32,6 +32,12 @@ export default function ShuffleScreen({ route, navigation }) {
 
 	function changeFavoriteStatusHandler() {
 		context.toggleFavorite(cocktails[currentCard]);
+		if (route.params.title === "Favorites") {
+			setCocktails((currentCocktails) => [
+				...currentCocktails.slice(0, currentCard),
+				...currentCocktails.slice(currentCard + 1),
+			]);
+		}
 	}
 
 	useLayoutEffect(() => {

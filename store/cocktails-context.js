@@ -14,7 +14,7 @@ export const CocktailContext = createContext({
 	allCocktails: [],
 	classicCocktails: [],
 	legacyCocktails: [],
-
+	setFavoritesAfterDBFetch: () => {},
 	modernClassicCocktails: [],
 	getCocktailsByKey: (title) => {},
 	getAllCocktails: () => {},
@@ -80,7 +80,7 @@ function reducer(state, action) {
 					if (category.title === "Favorites") {
 						return {
 							...category,
-							cocktails: [action.payload.cocktail, ...category.cocktails],
+							cocktails: [...category.cocktails, action.payload.cocktail],
 						};
 					} else {
 						return category;
@@ -106,7 +106,7 @@ function CocktailsContextProvider({ children }) {
 	useEffect(() => {
 		const checkDBOnFirstRender = async () => {
 			const foundInDB = await fetchCocktails();
-			console.log(foundInDB, "foundInDB");
+			// console.log(foundInDB, "foundInDB");
 			if (foundInDB) {
 				setFavoritesAfterDBFetch(foundInDB);
 			}
@@ -140,7 +140,7 @@ function CocktailsContextProvider({ children }) {
 			await deleteCocktail(cocktail);
 		} else {
 			//if cocktail doesn't exist add to sqlite db
-			insertCocktail(cocktail);
+			await insertCocktail(cocktail);
 		}
 		//execute dispatch everytime, syncing local and storage favorites
 		dispatch({ type: ACTIONS.TOGGLE_FAVORITE, payload: { cocktail } });
@@ -158,6 +158,7 @@ function CocktailsContextProvider({ children }) {
 		getAllCocktails,
 		getCocktailsByKey,
 		toggleFavorite,
+		setFavoritesAfterDBFetch,
 	};
 
 	return (

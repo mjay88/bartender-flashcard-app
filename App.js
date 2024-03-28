@@ -51,6 +51,7 @@ function DrawerNavigator() {
 						onPress={authCtx.logout}
 					/>
 				),
+				headerBackTitleVisible: false,
 			}}
 		>
 			<Drawer.Screen
@@ -62,7 +63,9 @@ function DrawerNavigator() {
 			<Drawer.Screen
 				name="Classics"
 				component={DeckScreen}
-				options={({ route }) => ({ title: "Classics" })}
+				options={({ route }) => ({
+					title: "Classics",
+				})}
 				initialParams={{ category: "Classics" }}
 			/>
 			<Drawer.Screen
@@ -114,6 +117,7 @@ function AuthenticatedStack() {
 				headerStyle: { backgroundColor: Colors.primary500 },
 				headerTintColor: "white",
 				contentStyle: { backgroundColor: Colors.primary100 },
+				headerBackTitleVisible: false,
 			}}
 		>
 			<Stack.Screen

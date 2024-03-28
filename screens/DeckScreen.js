@@ -3,18 +3,23 @@ import { Text, FlatList, View, StyleSheet } from "react-native";
 import { CocktailContext } from "../store/cocktails-context";
 import CocktailCard from "../components/card/CocktailCard";
 import { FAB } from "@rneui/themed";
+import { useIsFocused } from "@react-navigation/native";
+import { fetchCocktails } from "../util/database";
 
 export default function DeckScreen({ route, navigation }) {
+	const isFocused = useIsFocused();
 	const [cocktails, setCocktails] = useState([]);
 	const context = useContext(CocktailContext);
 	//this param is being passed from App.js DrawerNavigator setup
 	const { category: categoryFromDrawer } = route.params;
-	console.log(cocktails.title, "cocktails in DeckScreen");
+	console.log(cocktails.title, "title in DeckScreen");
+
 	useEffect(() => {
 		//this should be using a dispatch from cocktails-context, currently a work around
 		const cocktailsFoundByParam = context.cocktails.find((category) => {
 			// console.log(category.title, "category.title");
 			if (category.title === categoryFromDrawer) {
+				navigation.setOptions({ title: categoryFromDrawer });
 				return category;
 			}
 			//this params is being passed from HomeScreen.js
@@ -23,9 +28,10 @@ export default function DeckScreen({ route, navigation }) {
 				return category;
 			}
 		});
-
-		setCocktails(cocktailsFoundByParam);
-	}, []);
+		if (isFocused) {
+			setCocktails(cocktailsFoundByParam);
+		}
+	}, [isFocused]);
 	// console.log(cocktails.title, "after useEffect");
 	const renderCocktail = (cocktail) => {
 		// console.log(cocktail.item);
@@ -35,7 +41,11 @@ export default function DeckScreen({ route, navigation }) {
 	return (
 		<View>
 			{/* <Text>{route.params.data.title}</Text> */}
-			<FlatList data={cocktails.cocktails} renderItem={renderCocktail} />
+			<FlatList
+				data={cocktails.cocktails}
+				renderItem={renderCocktail}
+				keyExtractor={(item) => item.name}
+			/>
 			<FAB
 				visible={true}
 				title="Shuffle Deck"
