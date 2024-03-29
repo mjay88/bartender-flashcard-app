@@ -5,45 +5,19 @@ import {
 	StyleSheet,
 	Platform,
 	FlatList,
-	TouchableOpacity,
 	Dimensions,
+	ImageBackground,
 } from "react-native";
-import Animated, {
-	Easing,
-	interpolate,
-	useAnimatedStyle,
-	useSharedValue,
-	withSpring,
-	withTiming,
-	runOnJS,
-	useDerivedValue,
-} from "react-native-reanimated";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {
 	TapGestureHandler,
 	State,
 	GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import card from "../../assets/card.png";
+import { Colors } from "../../constants/styles";
 
 export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
-	//Shared value to control the flip animation
-	// const [isFlipped, setIsFlipped] = useState(false);
-	// const rotation = useSharedValue(0);
-	//function to toggle the flip state and trigger the animation
-	// const toggleFlip = () => {
-
-	// 	rotation.value = withTiming(
-	// 		isFlipped ? 0 : 180,
-	// 		{
-	// 			duration: 500,
-	// 			easing: Easing.ease,
-	// 		},
-	// 		() => {
-	// 			//after the animation is complete, update the flip state
-	// 			runOnJS(setIsFlipped)(!isFlipped);
-	// 		}
-	// 	);
-	// };
-	//define the styles for the front and back of the card based on the rotation
 	const frontCardStyle = useAnimatedStyle(() => {
 		return {
 			transform: [{ perspective: 1000 }, { rotateY: `${rotation.value}deg` }],
@@ -72,7 +46,17 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 				}}
 			>
 				<Animated.View style={[styles.innerCard, frontCardStyle]}>
-					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
+					<ImageBackground
+						source={card}
+						style={styles.backOfCardTitleContainer}
+						resizeMode="stretch"
+					>
+						<View style={{ borderRadius: 30, overflow: "hidden" }}>
+							<Text style={[styles.cardTitle, styles.backOfCard]}>
+								{cocktail?.name}
+							</Text>
+						</View>
+					</ImageBackground>
 				</Animated.View>
 			</TapGestureHandler>
 
@@ -120,7 +104,7 @@ const styles = StyleSheet.create({
 		// alignContent: "flex-start",
 		margin: 16,
 		marginVertical: 16,
-		borderRadius: 8,
+		borderRadius: 40,
 		elevation: 6,
 		//ios shadow won't work without a background color set
 		backgroundColor: "white",
@@ -136,11 +120,24 @@ const styles = StyleSheet.create({
 		position: "absolute",
 	},
 	cardTitle: {
-		padding: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 0,
 		fontSize: 20,
 		fontWeight: "bold",
 		textAlign: "center",
 		marginTop: 15,
+	},
+	backOfCardTitleContainer: {
+		alignItems: "center",
+		justifyContent: "flex-start",
+		flex: 1,
+	},
+	backOfCard: {
+		borderRadius: 40,
+		backgroundColor: Colors.primary100,
+
+		paddingHorizontal: 20,
+		marginTop: 20,
 	},
 	ingredientsList: {
 		paddingTop: 5,

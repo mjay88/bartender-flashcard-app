@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 
 		marginVertical: 16,
-		borderRadius: 8,
+		borderRadius: 40,
 		elevation: 6,
 		//ios shadow won't work without a background color set
 		backgroundColor: "white",
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
 	},
 	likeIcon: {
 		position: "absolute",
-		right: 5,
-		top: 5,
+		right: 20,
+		top: 8,
 		margin: 0,
 
 		// marginLeft: "auto",
