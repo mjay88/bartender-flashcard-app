@@ -35,22 +35,32 @@ const Drawer = createDrawerNavigator();
 
 //custom drawer content
 function CustomDrawerContent(props) {
+	const authCtx = useContext(AuthContext);
+
 	return (
 		<DrawerContentScrollView
 			contentContainerStyle={{
 				backgroundColor: Colors.primaryDark300,
 				drawerActiveBackgroundColor: Colors.secondary500,
 				drawerActiveTintColor: Colors.primaryDark300,
+				flex: 1,
+				justifyContent: "flex-start",
 			}}
 			{...props}
 		>
 			<DrawerItemList {...props} />
 
 			<DrawerItem
+				style={{
+					marginTop: "auto",
+					marginBottom: 5,
+					backgroundColor: Colors.primary100,
+				}}
 				label="Logout"
 				icon={({ focused, color, size }) => (
 					<Ionicons name="exit" color={color} size={size}></Ionicons>
 				)}
+				onPress={authCtx.logout}
 			/>
 		</DrawerContentScrollView>
 	);
