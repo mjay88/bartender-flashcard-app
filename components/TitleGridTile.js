@@ -1,4 +1,11 @@
-import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
+import {
+	View,
+	Text,
+	Pressable,
+	StyleSheet,
+	Platform,
+	Dimensions,
+} from "react-native";
 import { Colors } from "../constants/styles";
 export default function TitleGridTile({ item, onPress }) {
 	return (
@@ -23,7 +30,8 @@ const styles = StyleSheet.create({
 	gridItem: {
 		flex: 1,
 		margin: 16,
-		height: 275,
+		width: Dimensions.get("window").width / 1.75,
+		height: Dimensions.get("window").height / 2.1,
 		borderRadius: 8,
 		elevation: 6,
 		//ios shadow won't work without a background color set

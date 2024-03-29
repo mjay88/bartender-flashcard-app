@@ -4,7 +4,7 @@ import { CocktailContext } from "../store/cocktails-context";
 import CocktailCard from "../components/card/CocktailCard";
 import { FAB } from "@rneui/themed";
 import { useIsFocused } from "@react-navigation/native";
-import { fetchCocktails } from "../util/database";
+// import { fetchCocktails } from "../util/database";
 
 export default function DeckScreen({ route, navigation }) {
 	const isFocused = useIsFocused();

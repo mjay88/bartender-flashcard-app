@@ -6,6 +6,7 @@ import {
 	Platform,
 	FlatList,
 	TouchableOpacity,
+	Dimensions,
 } from "react-native";
 import Animated, {
 	Easing,
@@ -108,12 +109,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		height: 500,
+		// height: 500,
 	},
 
 	innerCard: {
-		width: "85%",
-		height: "90%",
+		width: Dimensions.get("window").width / 1.2,
+		height: Dimensions.get("window").height / 1.3,
 		// alignItems: "center",
 		justifyContent: "space-between",
 		// alignContent: "flex-start",

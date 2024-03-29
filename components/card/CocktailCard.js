@@ -1,6 +1,13 @@
 import { useContext } from "react";
 import { CocktailContext } from "../../store/cocktails-context";
-import { View, Text, StyleSheet, Platform, FlatList } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Platform,
+	FlatList,
+	Dimensions,
+} from "react-native";
 import IconButton from "../ui/IconButton";
 import { Colors } from "../../constants/styles";
 export default function CocktailCard({ cocktail }) {
@@ -62,8 +69,8 @@ const styles = StyleSheet.create({
 
 	innerCard: {
 		flex: 1,
-		width: "85%",
-		height: "90%",
+		width: Dimensions.get("window").width / 1.2,
+		// height: Dimensions.get("window").height / 3,
 		alignItems: "center",
 		justifyContent: "space-between",
 

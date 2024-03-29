@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from "expo-app-loading";
 import { useContext, useEffect, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
 	createDrawerNavigator,
@@ -24,11 +24,13 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import CocktailsContextProvider from "./store/cocktails-context";
 import IconButton from "./components/ui/IconButton";
 import { Ionicons } from "@expo/vector-icons";
+import logo from "./assets/Logo.png";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //for sqlite
 import { init } from "./util/database";
+import { Image } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,6 +50,25 @@ function CustomDrawerContent(props) {
 			}}
 			{...props}
 		>
+			<View>
+				<View
+					style={{
+						alignItems: "center",
+						width: Dimensions.get("window").width / 1.75,
+						height: Dimensions.get("window").height / 10,
+					}}
+				>
+					{/* <Image source={logo} resizeMode="center" /> */}
+					<Image
+						source={logo}
+						style={{
+							flex: 1,
+							width: Dimensions.get("window").width / 3,
+							resizeMode: "contain",
+						}}
+					/>
+				</View>
+			</View>
 			<DrawerItemList {...props} />
 
 			<DrawerItem
@@ -88,6 +109,9 @@ function DrawerNavigator() {
 					/>
 				),
 				headerBackTitleVisible: false,
+				drawerStyle: {
+					width: Dimensions.get("window").width / 1.75,
+				},
 			}}
 		>
 			<Drawer.Screen
