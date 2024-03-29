@@ -28,6 +28,7 @@ export default function DeckScreen({ route, navigation }) {
 				return category;
 			}
 		});
+		//is Focused is used primarily so when we navigate back from any deck the component is re mounted so favorite cocktails are accurate
 		if (isFocused) {
 			setCocktails(cocktailsFoundByParam);
 		}

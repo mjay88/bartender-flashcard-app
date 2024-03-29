@@ -2,8 +2,14 @@ import "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from "expo-app-loading";
 import { useContext, useEffect, useState } from "react";
+import { View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+	createDrawerNavigator,
+	DrawerContentScrollView,
+	DrawerItem,
+	DrawerItemList,
+} from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 
@@ -12,14 +18,12 @@ import SignupScreen from "./screens/SignupScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ShuffleScreen from "./screens/ShuffleScreen";
 import DeckScreen from "./screens/DeckScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
+
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import CocktailsContextProvider from "./store/cocktails-context";
 import IconButton from "./components/ui/IconButton";
 import { Ionicons } from "@expo/vector-icons";
-
-import { CocktailContext } from "./store/cocktails-context";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -29,12 +33,34 @@ import { init } from "./util/database";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
+//custom drawer content
+function CustomDrawerContent(props) {
+	return (
+		<DrawerContentScrollView
+			contentContainerStyle={{
+				backgroundColor: Colors.primaryDark300,
+				drawerActiveBackgroundColor: Colors.secondary500,
+				drawerActiveTintColor: Colors.primaryDark300,
+			}}
+			{...props}
+		>
+			<DrawerItemList {...props} />
+
+			<DrawerItem
+				label="Logout"
+				icon={({ focused, color, size }) => (
+					<Ionicons name="exit" color={color} size={size}></Ionicons>
+				)}
+			/>
+		</DrawerContentScrollView>
+	);
+}
 //drawer navigator
 function DrawerNavigator() {
-	const cocktailContext = useContext(CocktailContext);
 	const authCtx = useContext(AuthContext);
 	return (
 		<Drawer.Navigator
+			drawerContent={(props) => <CustomDrawerContent {...props} />}
 			screenOptions={{
 				headerStyle: { backgroundColor: Colors.primaryDark300 },
 				headerTintColor: "white",
