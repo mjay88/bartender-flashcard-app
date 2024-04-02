@@ -7,6 +7,7 @@ import {
 	FlatList,
 	Dimensions,
 	ImageBackground,
+	Image,
 } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {
@@ -15,6 +16,7 @@ import {
 	GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import card from "../../assets/card.png";
+import APC from "../../assets/APC.png";
 import { Colors } from "../../constants/styles";
 
 export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
@@ -37,7 +39,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
 	};
 	return (
-		<GestureHandlerRootView style={styles.outerCard}>
+		<GestureHandlerRootView style={styles.screen}>
 			<TapGestureHandler
 				onHandlerStateChange={({ nativeEvent }) => {
 					if (nativeEvent.state === State.END) {
@@ -45,7 +47,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 					}
 				}}
 			>
-				<Animated.View style={[styles.innerCard, frontCardStyle]}>
+				<Animated.View style={[styles.outerCard, frontCardStyle]}>
 					<ImageBackground
 						source={card}
 						style={styles.backOfCardTitleContainer}
@@ -56,6 +58,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 								{cocktail?.name}
 							</Text>
 						</View>
+						{/* <Image style={styles.image} source={APC} resizeMode="center" /> */}
 					</ImageBackground>
 				</Animated.View>
 			</TapGestureHandler>
@@ -68,8 +71,10 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 				}}
 			>
 				<Animated.View
-					style={[styles.innerCard, backCardStyle, styles.cardBack]}
+					style={[styles.outerCard, backCardStyle, styles.cardBack]}
 				>
+					{/* <View style={styles.innerCard}> */}
+					<Image style={styles.imageTop} source={APC} resizeMode="center" />
 					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
 					<View style={styles.ingredientsList}>
 						<FlatList
@@ -82,6 +87,8 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 					<Text style={[styles.cardField, { marginBottom: 20 }]}>
 						{cocktail.glassware}
 					</Text>
+					<Image style={styles.imageBottom} source={APC} resizeMode="center" />
+					{/* </View> */}
 				</Animated.View>
 			</TapGestureHandler>
 		</GestureHandlerRootView>
@@ -89,15 +96,15 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 }
 
 const styles = StyleSheet.create({
-	outerCard: {
+	screen: {
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
 		// height: 500,
 	},
 
-	innerCard: {
-		width: Dimensions.get("window").width / 1.2,
+	outerCard: {
+		width: Dimensions.get("window").width / 1.15,
 		height: Dimensions.get("window").height / 1.3,
 		// alignItems: "center",
 		justifyContent: "space-between",
@@ -105,6 +112,8 @@ const styles = StyleSheet.create({
 		margin: 16,
 		marginVertical: 16,
 		borderRadius: 40,
+		borderColor: Colors.primaryDark400,
+		borderWidth: 0.5,
 		elevation: 6,
 		//ios shadow won't work without a background color set
 		backgroundColor: "white",
@@ -116,16 +125,25 @@ const styles = StyleSheet.create({
 		overflow: Platform.OS === "android" ? "hidden" : "visible",
 		backfaceVisibility: "hidden",
 	},
+
+	// innerCard: {
+	// 	borderColor: Colors.primaryDark400,
+	// 	borderWidth: 1,
+	// 	flex: 1,
+	// 	marginHorizontal: 35,
+	// 	marginVertical: 30,
+	// },
+
 	cardBack: {
 		position: "absolute",
 	},
 	cardTitle: {
-		paddingVertical: 10,
+		paddingVertical: 5,
 		paddingHorizontal: 0,
 		fontSize: 20,
 		fontWeight: "bold",
 		textAlign: "center",
-		marginTop: 15,
+		marginTop: 2,
 	},
 	backOfCardTitleContainer: {
 		alignItems: "center",
@@ -140,8 +158,8 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	ingredientsList: {
-		paddingTop: 5,
-		paddingBottom: 5,
+		paddingTop: 2,
+		paddingBottom: 2,
 		marginHorizontal: 20,
 	},
 	ingredient: {
@@ -156,5 +174,29 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontWeight: "500",
 		fontSize: 16,
+	},
+	// image: {
+	// 	width: 250,
+	// 	height: 250,
+	// 	borderRadius: 250 / 2,
+	// 	overflow: "hidden",
+	// 	borderWidth: 3,
+	// 	borderColor: "red",
+	// 	marginHorizontal: "auto",
+	// 	marginVertical: "auto",
+	// },
+	imageTop: {
+		position: "absolute",
+		width: Dimensions.get("window").width / 8,
+		height: Dimensions.get("window").height / 8,
+		top: Dimensions.get("window").height / 1000,
+		left: Dimensions.get("window").height / 40,
+	},
+	imageBottom: {
+		position: "absolute",
+		width: Dimensions.get("window").width / 8,
+		height: Dimensions.get("window").height / 8,
+		bottom: Dimensions.get("window").height / 1000,
+		right: Dimensions.get("window").height / 40,
 	},
 });
