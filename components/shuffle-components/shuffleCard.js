@@ -8,7 +8,6 @@ import {
 	Dimensions,
 	ImageBackground,
 	Image,
-	useWindowDimensions,
 } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {
@@ -26,12 +25,15 @@ import tikimug from "../../assets/tikimug.png";
 import { Colors } from "../../constants/styles";
 import { imageMapper } from "../../util/imageMapper";
 
+const screen = Dimensions.get("screen");
+
 export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
-	const [glassware, setGlassware] = useState("");
-	//trying to resize flute and collins
+	const [glassware, setGlassware] = useState(APC);
+
 	useLayoutEffect(() => {
 		setGlassware(cocktail.glassware.toLowerCase());
 	}, [cocktail.glassware]);
+
 	const [imageSrc, setImageSrc] = useState("");
 	useLayoutEffect(() => {
 		setImageSrc(
@@ -87,7 +89,6 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 								{cocktail?.name}
 							</Text>
 						</View>
-						{/* <Image style={styles.image} source={APC} resizeMode="center" /> */}
 					</ImageBackground>
 				</Animated.View>
 			</TapGestureHandler>
@@ -102,8 +103,6 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 				<Animated.View
 					style={[styles.outerCard, backCardStyle, styles.cardBack]}
 				>
-					{/* <View style={styles.innerCard}> */}
-					{/* <View style={styles.imageContainer}> */}
 					<Image
 						style={[styles.imageTop, conditionalStyles(glassware).imageTop]}
 						source={imageSrc}
@@ -202,14 +201,6 @@ const styles = StyleSheet.create({
 		backfaceVisibility: "hidden",
 	},
 
-	// innerCard: {
-	// 	borderColor: Colors.primaryDark400,
-	// 	borderWidth: 1,
-	// 	flex: 1,
-	// 	marginHorizontal: 35,
-	// 	marginVertical: 30,
-	// },
-
 	cardBack: {
 		position: "absolute",
 		paddingVertical: 20,
@@ -217,7 +208,7 @@ const styles = StyleSheet.create({
 	cardTitle: {
 		paddingVertical: 5,
 		paddingHorizontal: 0,
-		fontSize: 20,
+		fontSize: screen.height > 900 ? 25 : 20,
 		fontWeight: "bold",
 		textAlign: "center",
 		marginTop: 2,
@@ -231,7 +222,6 @@ const styles = StyleSheet.create({
 		borderRadius: 40,
 		backgroundColor: Colors.primary100,
 		paddingVertical: 20,
-
 		paddingHorizontal: 20,
 		marginTop: 20,
 	},
@@ -244,14 +234,14 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontWeight: "500",
 		padding: 3,
-		fontSize: 16,
+		fontSize: screen.height > 900 ? 20 : 16,
 	},
 	cardField: {
 		marginHorizontal: 20,
 		paddingVertical: 12,
 		textAlign: "center",
 		fontWeight: "500",
-		fontSize: 16,
+		fontSize: screen.height > 900 ? 20 : 16,
 	},
 
 	imageTop: {

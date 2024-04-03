@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import IconButton from "../ui/IconButton";
 import { Colors } from "../../constants/styles";
+
+const screen = Dimensions.get("screen");
+
 export default function CocktailCard({ cocktail }) {
 	// console.log(cocktail, "inside CocktailCard component");
 	const context = useContext(CocktailContext);
@@ -29,6 +32,7 @@ export default function CocktailCard({ cocktail }) {
 	const isFavorite = favorites.find(
 		(favorite) => favorite.name === cocktail.name
 	);
+	console.log(screen.height, "screen.height");
 	return (
 		<View style={styles.outerCard}>
 			<View style={styles.innerCard}>
@@ -64,11 +68,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		height: 500,
 	},
 
 	innerCard: {
 		flex: 1,
+		height: Dimensions.get("window").height / 1.3,
 		width: Dimensions.get("window").width / 1.2,
 		// height: Dimensions.get("window").height / 3,
 		alignItems: "center",
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		// paddingRight: 0,
 		// margin: 0,
-		fontSize: 20,
+		fontSize: screen.height > 900 ? 25 : 20,
 		fontWeight: "bold",
 		textAlign: "center",
 	},
@@ -104,14 +108,14 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontWeight: "500",
 		padding: 3,
-		fontSize: 16,
+		fontSize: screen.height > 900 ? 20 : 16,
 	},
 	cardField: {
 		marginHorizontal: 20,
 		paddingVertical: 12,
 		textAlign: "center",
 		fontWeight: "500",
-		fontSize: 16,
+		fontSize: screen.height > 900 ? 20 : 16,
 	},
 	titleContainer: {
 		// marginTop: 1,
