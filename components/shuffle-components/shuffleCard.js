@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react";
+import { useLayoutEffect, useState, createContext } from "react";
 import {
 	View,
 	Text,
@@ -17,9 +17,31 @@ import {
 } from "react-native-gesture-handler";
 import card from "../../assets/card.png";
 import APC from "../../assets/APC.png";
+import rocksglass from "../../assets/rocksglass.png";
+import collins from "../../assets/collins.png";
+import flute from "../../assets/flute.png";
+import wineglass from "../../assets/wineglass.png";
+import tikimug from "../../assets/tikimug.png";
 import { Colors } from "../../constants/styles";
+import { imageMapper } from "../../util/imageMapper";
 
 export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
+	const [imageSrc, setImageSrc] = useState("");
+	useLayoutEffect(() => {
+		setImageSrc(
+			imageMapper(
+				{
+					coupe: APC,
+					flute: flute,
+					rocks: rocksglass,
+					collins: collins,
+					wineGlass: wineglass,
+					tikiMug: tikimug,
+				},
+				cocktail.glassware.toLowerCase()
+			)
+		);
+	}, [cocktail.glassware]);
 	const frontCardStyle = useAnimatedStyle(() => {
 		return {
 			transform: [{ perspective: 1000 }, { rotateY: `${rotation.value}deg` }],
@@ -38,6 +60,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 	const renderIngredientItem = (ingredient) => {
 		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
 	};
+	console.log(rocksglass, "rocksglass");
 	return (
 		<GestureHandlerRootView style={styles.screen}>
 			<TapGestureHandler
@@ -53,7 +76,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 						style={styles.backOfCardTitleContainer}
 						resizeMode="stretch"
 					>
-						<View style={{ borderRadius: 30, overflow: "hidden" }}>
+						<View style={{ borderRadius: 40, overflow: "hidden" }}>
 							<Text style={[styles.cardTitle, styles.backOfCard]}>
 								{cocktail?.name}
 							</Text>
@@ -74,7 +97,11 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 					style={[styles.outerCard, backCardStyle, styles.cardBack]}
 				>
 					{/* <View style={styles.innerCard}> */}
-					<Image style={styles.imageTop} source={APC} resizeMode="center" />
+					<Image
+						style={styles.imageTop}
+						source={imageSrc}
+						resizeMode="center"
+					/>
 					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
 					<View style={styles.ingredientsList}>
 						<FlatList
@@ -87,7 +114,11 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 					<Text style={[styles.cardField, { marginBottom: 20 }]}>
 						{cocktail.glassware}
 					</Text>
-					<Image style={styles.imageBottom} source={APC} resizeMode="center" />
+					<Image
+						style={styles.imageBottom}
+						source={imageSrc}
+						resizeMode="center"
+					/>
 					{/* </View> */}
 				</Animated.View>
 			</TapGestureHandler>
@@ -113,7 +144,6 @@ const styles = StyleSheet.create({
 		marginVertical: 16,
 		borderRadius: 40,
 		borderColor: Colors.primaryDark400,
-		borderWidth: 0.5,
 		elevation: 6,
 		//ios shadow won't work without a background color set
 		backgroundColor: "white",
@@ -136,6 +166,7 @@ const styles = StyleSheet.create({
 
 	cardBack: {
 		position: "absolute",
+		paddingVertical: 20,
 	},
 	cardTitle: {
 		paddingVertical: 5,
@@ -153,6 +184,7 @@ const styles = StyleSheet.create({
 	backOfCard: {
 		borderRadius: 40,
 		backgroundColor: Colors.primary100,
+		paddingVertical: 20,
 
 		paddingHorizontal: 20,
 		marginTop: 20,
