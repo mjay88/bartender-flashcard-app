@@ -8,6 +8,7 @@ import {
 	Dimensions,
 	ImageBackground,
 	Image,
+	useWindowDimensions,
 } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {
@@ -26,6 +27,11 @@ import { Colors } from "../../constants/styles";
 import { imageMapper } from "../../util/imageMapper";
 
 export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
+	const [glassware, setGlassware] = useState("");
+	//trying to resize flute and collins
+	useLayoutEffect(() => {
+		setGlassware(cocktail.glassware.toLowerCase());
+	}, [cocktail.glassware]);
 	const [imageSrc, setImageSrc] = useState("");
 	useLayoutEffect(() => {
 		setImageSrc(
@@ -58,7 +64,7 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 	});
 
 	const renderIngredientItem = (ingredient) => {
-		return <Text style={styles.ingredient}>{ingredient.item}</Text>;
+		return <Text style={[styles.ingredient]}>{ingredient.item}</Text>;
 	};
 	console.log(rocksglass, "rocksglass");
 	return (
@@ -97,12 +103,21 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 					style={[styles.outerCard, backCardStyle, styles.cardBack]}
 				>
 					{/* <View style={styles.innerCard}> */}
+					{/* <View style={styles.imageContainer}> */}
 					<Image
-						style={styles.imageTop}
+						style={[styles.imageTop, conditionalStyles(glassware).imageTop]}
 						source={imageSrc}
 						resizeMode="center"
 					/>
-					<Text style={styles.cardTitle}>{cocktail?.name}</Text>
+					{/* </View> */}
+					<Text
+						style={[
+							styles.cardTitle,
+							cocktail.name === "Mojito" ? { marginBottom: 15 } : "",
+						]}
+					>
+						{cocktail?.name}
+					</Text>
 					<View style={styles.ingredientsList}>
 						<FlatList
 							data={cocktail.ingredients}
@@ -115,7 +130,10 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 						{cocktail.glassware}
 					</Text>
 					<Image
-						style={styles.imageBottom}
+						style={[
+							styles.imageBottom,
+							conditionalStyles(glassware).imageBottom,
+						]}
 						source={imageSrc}
 						resizeMode="center"
 					/>
@@ -125,6 +143,34 @@ export default function ShuffleCard({ cocktail, toggleFlip, rotation }) {
 		</GestureHandlerRootView>
 	);
 }
+
+const conditionalStyles = (glassware) => {
+	let styles;
+	console.log(glassware);
+	if (glassware === "flute") {
+		styles = StyleSheet.create({
+			imageTop: {
+				position: "absolute",
+				width: Dimensions.get("window").width / 10,
+				height: Dimensions.get("window").height / 4,
+				top: -30,
+				left: Dimensions.get("window").height / 40,
+				marginHorizontal: 0,
+				paddingHorizontal: 0,
+			},
+			imageBottom: {
+				position: "absolute",
+				width: Dimensions.get("window").width / 10,
+				height: Dimensions.get("window").height / 4,
+				bottom: -30,
+				right: Dimensions.get("window").height / 40,
+			},
+		});
+	} else {
+		styles = "";
+	}
+	return styles;
+};
 
 const styles = StyleSheet.create({
 	screen: {
@@ -207,16 +253,7 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		fontSize: 16,
 	},
-	// image: {
-	// 	width: 250,
-	// 	height: 250,
-	// 	borderRadius: 250 / 2,
-	// 	overflow: "hidden",
-	// 	borderWidth: 3,
-	// 	borderColor: "red",
-	// 	marginHorizontal: "auto",
-	// 	marginVertical: "auto",
-	// },
+
 	imageTop: {
 		position: "absolute",
 		width: Dimensions.get("window").width / 8,
