@@ -12,7 +12,7 @@ export default function DeckScreen({ route, navigation }) {
 	const context = useContext(CocktailContext);
 	//this param is being passed from App.js DrawerNavigator setup
 	const { category: categoryFromDrawer } = route.params;
-	console.log(cocktails.title, "title in DeckScreen");
+	// console.log(cocktails.title, "title in DeckScreen");
 
 	useEffect(() => {
 		//this should be using a dispatch from cocktails-context, currently a work around

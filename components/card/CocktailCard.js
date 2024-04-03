@@ -32,7 +32,7 @@ export default function CocktailCard({ cocktail }) {
 	const isFavorite = favorites.find(
 		(favorite) => favorite.name === cocktail.name
 	);
-	console.log(screen.height, "screen.height");
+	// console.log(screen.height, "screen.height");
 	return (
 		<View style={styles.outerCard}>
 			<View style={styles.innerCard}>

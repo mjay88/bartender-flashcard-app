@@ -106,7 +106,6 @@ function CocktailsContextProvider({ children }) {
 	useEffect(() => {
 		const checkDBOnFirstRender = async () => {
 			const foundInDB = await fetchCocktails();
-			// console.log(foundInDB, "foundInDB");
 			if (foundInDB) {
 				setFavoritesAfterDBFetch(foundInDB);
 			}
@@ -115,9 +114,17 @@ function CocktailsContextProvider({ children }) {
 	}, []);
 
 	const getAllCocktails = () => {
-		dispatch({ type: ACTIONS.GET_ALL_COCKTAILS });
+		let allCocktails = [];
+
+		cocktails.forEach((category) => {
+			if (category.title !== "Favorites") {
+				allCocktails = [...allCocktails, ...category.cocktails];
+			}
+		});
+		return allCocktails;
 	};
 	//this doesn't have to dispatch, we are not updating state by getting cocktails, just make it retrieve what we want from state,
+	//not using this, but leave here for example of what not to do
 	const getCocktailsByKey = (title) => {
 		return state.find((category) => {
 			console.log(category.title, "inside reducer");

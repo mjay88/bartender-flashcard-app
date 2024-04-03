@@ -76,6 +76,11 @@ export default function ShuffleScreen({ route, navigation }) {
 		}
 	}, []);
 
+	const reShuffle = () => {
+		setCurrentCard(0);
+		setCocktails((prev) => shuffle(prev));
+	};
+
 	let timeoutId;
 	function previousHandler() {
 		if (currentCard === 0) return;
@@ -112,7 +117,11 @@ export default function ShuffleScreen({ route, navigation }) {
 
 			<View style={styles.buttonContainer}>
 				<Button onPress={previousHandler}>{"previous"}</Button>
-				<Button onPress={nextHandler}>{"next"}</Button>
+				<Button
+					onPress={currentCard === endOfDeck - 1 ? reShuffle : nextHandler}
+				>
+					{currentCard === endOfDeck - 1 ? "re-shuffle" : "next"}
+				</Button>
 			</View>
 		</View>
 	);
