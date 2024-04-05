@@ -35,6 +35,6 @@ export const imageMapper = (imageObj, glassware) => {
 			image = imageObj.coupe;
 			break;
 	}
-	console.log(image, "image from imageMapper");
+	// console.log(image, "image from imageMapper");
 	return image;
 };
